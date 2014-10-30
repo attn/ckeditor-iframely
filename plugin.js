@@ -9,7 +9,8 @@
         editor.ui.addButton( 'iframely', {
           label: 'Embed via iframely',
           command: 'iframely',
-          toolbar: 'insert'
+          toolbar: 'insert',
+          icon: this.path + "icons/iframely.png"
         });
 
         CKEDITOR.dialog.add( 'iframelyDialog', this.path + 'dialogs/iframely.js' );
