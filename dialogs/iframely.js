@@ -42,10 +42,11 @@
         }
 
         var embed = editor.document.createElement( 'div' );
+
+        embed.setAttribute('class', 'iframely-embed iframely-embed-' + provider.toLowerCase());
         embed.appendHtml( json.html );
 
-        var placeholder = editor.createFakeElement( embed , 'iframely-embed iframely-embed-' + provider.toLowerCase(), 'div', true);
-        editor.insertElement( placeholder );
+        editor.insertElement( embed );
 
       }
 

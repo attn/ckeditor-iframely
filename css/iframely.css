@@ -1,7 +1,9 @@
-img.iframely-embed{
-  background: url('http://placehold.it/320');
-  border: 1px solid #a9a9a9;
-  display: block;
+.iframely-embed{
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.iframely-embed > * {
   margin: 0 auto;
-  width: 320px;
+  width: 50%;
 }
