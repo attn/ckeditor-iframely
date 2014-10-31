@@ -7,7 +7,7 @@
       'fakeobjects'
     ],
     init: function( editor ) {
-  
+
       editor.addContentsCss( this.path + 'css/iframely.css' );
 
       editor.addCommand( 'iframely', new CKEDITOR.dialogCommand('iframelyDialog') );

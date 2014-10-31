@@ -31,12 +31,20 @@
         xmlHttp.open( 'GET', endpoint, false );
         xmlHttp.send( null );
 
-        // We need error handling
 
         var json = JSON.parse(xmlHttp.responseText);
+
+        if (editor.config.iframely_method === 'iframely') {
+          var provider = json.meta.site;
+        }
+        else if(editor.config.iframely_method === 'oembed') {
+          var provider = json.provider_name;
+        }
+
         var embed = editor.document.createElement( 'div' );
         embed.appendHtml( json.html );
-        var placeholder = editor.createFakeElement( embed , 'iframely-embed', 'div', true);
+
+        var placeholder = editor.createFakeElement( embed , 'iframely-embed iframely-embed-' + provider.toLowerCase(), 'div', true);
         editor.insertElement( placeholder );
 
       }
