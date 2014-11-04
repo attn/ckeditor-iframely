@@ -7,15 +7,23 @@
 
       editor.addContentsCss( this.path + 'css/iframely.css' );
 
-      editor.addCommand( 'iframely', new CKEDITOR.dialogCommand('iframelyDialog', { allowedContent : 'div(iframely);iframe[*](*)' }) );
+      var dialog = new CKEDITOR.dialogCommand(
+        'iframelyDialog',
+        {allowedContent : 'div(iframely);iframe[*](*)'}
+      );
+
+      editor.addCommand('iframely', dialog);
 
       editor.ui.addButton( 'iframely', {
         label: 'Embed via iframely',
         command: 'iframely',
         toolbar: 'insert',
-        icon: this.path + "icons/iframely.png"
+        icon: this.path + 'icons/iframely.png'
       });
-      CKEDITOR.dialog.add( 'iframelyDialog', this.path + 'dialogs/iframely.js' );
+      CKEDITOR.dialog.add(
+        'iframelyDialog',
+        this.path + 'dialogs/iframely.js'
+      );
     }
   });
 })();

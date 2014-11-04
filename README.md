@@ -9,9 +9,18 @@
 
 These settings are to be added to the CKEditor config.js file.
 
-* `config.iframely_api_key`
-* `config.iframely_method` (iframely || oembed)
-
+````
+config.iframely = {
+  iframe: true,
+  autoplay:true,
+  ssl: true,
+  html5: true,
+  maxwidth: '100%',
+  origin: '',
+  callback: '',
+  format: ''
+};
+````
 
 ### License
 
