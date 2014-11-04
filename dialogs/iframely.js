@@ -26,7 +26,6 @@
       onOk: function() {
 
         // @todo add a default configuration object.
-
         var hostname = editor.config.iframely.endpoint || 'http://iframe.ly';
         var method = editor.config.iframely.method || 'oembed';
         var endpoint = hostname + '/api/' + method;
@@ -61,22 +60,42 @@
         }
 
         var json = JSON.parse(xmlHttp.responseText);
+        var html = json.html;
 
         if (editor.config.iframely.method === 'iframely') {
-          provider = json.meta.site;
+          provider = json.meta.site.toLowerCase();
+
+          if (typeof editor.config.iframely.embed_key !== 'undefined') {
+            var embed_key = editor.config.iframely.embed_key;
+            if (embed_key.hasOwnProperty(provider)) {
+               var buff = json;
+               var pieces = embed_key[provider].split(".");
+               for(var i=0; i< pieces.length; i++) {
+                 if (buff.hasOwnProperty(pieces[i])) {
+                   buff = buff[pieces[i]];
+                 }
+                 else {
+                   buff = false;
+                 }
+               }
+               if (buff !== false) {
+                 html = buff;
+               }
+            }
+          }
         }
         else if(editor.config.iframely.method === 'oembed') {
-          provider = json.provider_name;
+          provider = json.provider_name.toLowerCase();
         }
 
         var embed = editor.document.createElement( 'div' );
 
         embed.setAttribute(
           'class',
-          'iframely-embed iframely-embed-' + provider.toLowerCase()
+          'iframely-embed iframely-embed-' + provider
         );
-        
-        embed.appendHtml( json.html );
+
+        embed.appendHtml( html );
 
         editor.insertElement( embed );
 

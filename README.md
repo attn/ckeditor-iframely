@@ -18,7 +18,10 @@ config.iframely = {
   maxwidth: '100%',
   origin: '',
   callback: '',
-  format: ''
+  format: '',
+  embed_key: {
+    instagram: 'links.app.0.html'
+  }
 };
 ````
 
