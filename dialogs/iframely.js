@@ -26,8 +26,22 @@
       onOk: function() {
 
         // @todo add a default configuration object.
-        var hostname = editor.config.iframely.endpoint || 'http://iframe.ly';
-        var method = editor.config.iframely.method || 'oembed';
+
+        var hostname = 'http://iframe.ly';
+        var method = 'oembed';
+
+        if (typeof editor.config.iframely === 'undefined') {
+          editor.config.iframely = {};
+        }
+
+        if (typeof editor.config.iframely.endpoint !== 'undefined') {
+          hostname = editor.config.iframely.endpoint;
+        }
+
+        if (typeof editor.config.iframely.method !== 'undefined') {
+          method = editor.config.iframely.method;
+        }
+
         var endpoint = hostname + '/api/' + method;
         var provider = '';
 
@@ -63,7 +77,14 @@
         var html = json.html;
 
         if (editor.config.iframely.method === 'iframely') {
-          provider = json.meta.site.toLowerCase();
+          if (typeof json.meta.site !== 'undefined') {
+            provider = json.meta.site.toLowerCase();
+          }
+          else {
+            if (typeof json.meta.author !== 'undefined') {
+              provider = json.meta.author.toLowerCase();
+            }
+          }
 
           if (typeof editor.config.iframely.embed_key !== 'undefined') {
             var embed_key = editor.config.iframely.embed_key;
@@ -85,14 +106,21 @@
           }
         }
         else if(editor.config.iframely.method === 'oembed') {
-          provider = json.provider_name.toLowerCase();
+          if (typeof json.provider_name !== 'undefined') {
+            provider = json.provider_name.toLowerCase();
+          }
         }
 
         var embed = editor.document.createElement( 'div' );
+        var classes = ['iframely-embed'];
+
+        if (provider !== '') {
+          classes.push(classes[0] + '-' + provider);
+        }
 
         embed.setAttribute(
           'class',
-          'iframely-embed iframely-embed-' + provider
+          classes.join(' ')
         );
 
         embed.appendHtml( html );

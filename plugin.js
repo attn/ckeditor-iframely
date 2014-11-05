@@ -5,8 +5,6 @@
     icons: 'iframely',
     init: function( editor ) {
 
-      editor.addContentsCss( this.path + 'css/iframely.css' );
-
       var dialog = new CKEDITOR.dialogCommand(
         'iframelyDialog',
         {allowedContent : 'div(iframely);iframe[*](*)'}
