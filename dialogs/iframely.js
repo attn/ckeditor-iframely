@@ -115,7 +115,10 @@
         var classes = ['iframely-embed'];
 
         if (provider !== '') {
-          classes.push(classes[0] + '-' + provider);
+
+          var provider_class = provider.split(' ').join('-');
+
+          classes.push(classes[0] + '-' + provider_class);
         }
 
         embed.setAttribute(
