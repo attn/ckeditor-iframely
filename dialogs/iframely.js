@@ -46,7 +46,7 @@
         var provider = '';
 
         var query = [
-          'url=' + encodeURI(this.getValueOf( 'iframely-embed', 'url' ))
+          'url=' + encodeURIComponent(this.getValueOf( 'iframely-embed', 'url' ))
         ];
 
         for(var config in editor.config.iframely) {
@@ -54,6 +54,7 @@
             switch(config) {
               case 'method':
               case 'endpoint':
+              case 'embed_key':
                 continue;
               default:
                 query.push(config + '=' + editor.config.iframely[config]);
