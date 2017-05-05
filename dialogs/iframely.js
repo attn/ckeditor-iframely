@@ -29,6 +29,7 @@
 
         var hostname = 'http://iframe.ly';
         var method = 'oembed';
+        var api_key = null;
 
         if (typeof editor.config.iframely === 'undefined') {
           editor.config.iframely = {};
@@ -40,6 +41,10 @@
 
         if (typeof editor.config.iframely.method !== 'undefined') {
           method = editor.config.iframely.method;
+        }
+
+        if (typeof editor.config.iframely.api_key !== 'undefined') {
+          api_key = editor.config.iframely.api_key;
         }
 
         var endpoint = hostname + '/api/' + method;
