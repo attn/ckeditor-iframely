@@ -69,72 +69,64 @@
         }
 
         endpoint += '?' + query.join('&');
+        jQuery.get(endpoint, function(json) {
+          var html = json.html;
 
-        var xmlHttp = null;
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( 'GET', endpoint, false );
-        xmlHttp.send( null );
+          if (editor.config.iframely.method === 'iframely') {
+            if (typeof json.meta.site !== 'undefined') {
+              provider = json.meta.site.toLowerCase();
+            }
+            else {
+              if (typeof json.meta.author !== 'undefined') {
+                provider = json.meta.author.toLowerCase();
+              }
+            }
 
-        if (xmlHttp.status !== 200) {
-          return;
-        }
-
-        var json = JSON.parse(xmlHttp.responseText);
-        var html = json.html;
-
-        if (editor.config.iframely.method === 'iframely') {
-          if (typeof json.meta.site !== 'undefined') {
-            provider = json.meta.site.toLowerCase();
+            if (typeof editor.config.iframely.embed_key !== 'undefined') {
+              var embed_key = editor.config.iframely.embed_key;
+              if (embed_key.hasOwnProperty(provider)) {
+                var buff = json;
+                var pieces = embed_key[provider].split(".");
+                for(var i=0; i< pieces.length; i++) {
+                  if (buff.hasOwnProperty(pieces[i])) {
+                    buff = buff[pieces[i]];
+                  }
+                  else {
+                    buff = false;
+                  }
+                }
+                if (buff !== false) {
+                  html = buff;
+                }
+              }
+            }
           }
-          else {
-            if (typeof json.meta.author !== 'undefined') {
-              provider = json.meta.author.toLowerCase();
+          else if(editor.config.iframely.method === 'oembed') {
+            if (typeof json.provider_name !== 'undefined') {
+              provider = json.provider_name.toLowerCase();
             }
           }
 
-          if (typeof editor.config.iframely.embed_key !== 'undefined') {
-            var embed_key = editor.config.iframely.embed_key;
-            if (embed_key.hasOwnProperty(provider)) {
-               var buff = json;
-               var pieces = embed_key[provider].split(".");
-               for(var i=0; i< pieces.length; i++) {
-                 if (buff.hasOwnProperty(pieces[i])) {
-                   buff = buff[pieces[i]];
-                 }
-                 else {
-                   buff = false;
-                 }
-               }
-               if (buff !== false) {
-                 html = buff;
-               }
-            }
+          var embed = editor.document.createElement( 'div' );
+          var classes = ['iframely-embed'];
+
+          if (provider !== '') {
+
+            var provider_class = provider.split(' ').join('-');
+
+            classes.push(classes[0] + '-' + provider_class);
           }
-        }
-        else if(editor.config.iframely.method === 'oembed') {
-          if (typeof json.provider_name !== 'undefined') {
-            provider = json.provider_name.toLowerCase();
-          }
-        }
 
-        var embed = editor.document.createElement( 'div' );
-        var classes = ['iframely-embed'];
+          embed.setAttribute(
+            'class',
+            classes.join(' ')
+          );
 
-        if (provider !== '') {
+          embed.appendHtml( html );
 
-          var provider_class = provider.split(' ').join('-');
+          editor.insertElement( embed );
+        });
 
-          classes.push(classes[0] + '-' + provider_class);
-        }
-
-        embed.setAttribute(
-          'class',
-          classes.join(' ')
-        );
-
-        embed.appendHtml( html );
-
-        editor.insertElement( embed );
 
       }
     };
